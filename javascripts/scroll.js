@@ -1,13 +1,24 @@
 $(function() {
   const STATES = [0,1,2,3];
-  function randomState() {
+  let timer;
+
+  function randomState(exclude) {
+    let possibleStates = $.grep(STATES, function(el) {
+      return el != exclude;
+    });
+
     return STATES[Math.floor(Math.random() * 4)]
   }
 
-  function animateUi() {
+  function randomizeState() {
     let screen = $('.welcomeScreen');
-    screen.attr('data-state', randomState());
+    let currentState = screen.attr("data-state");
+    screen.attr('data-state', randomState(currentState));
+  };
 
+  function animateUi() {
+    clearTimeout(timer);
+    timer = setTimeout(randomizeState, 100);
   };
 
   $(".main").onepage_scroll({
